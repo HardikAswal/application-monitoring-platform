@@ -2,6 +2,9 @@ import React, { useEffect } from "react";
 import { auth, provider } from "../config/firebase";
 import { signInWithPopup } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import Hero from "../components/Hero";
+import Footer from "../components/Footer";
+import CTA from "../components/CTA";
 
 export default function Auth() {
   const navigate = useNavigate();
@@ -62,8 +65,9 @@ export default function Auth() {
 
   return (
     <div>
-      {user ? "userGot" : ""}
-      <button onClick={handleClick}>Sign in with google</button>
+      <Hero signInWithGoogle={handleClick} />
+      <CTA signInWithGoogle={handleClick} />
+      <Footer />
     </div>
   );
 }

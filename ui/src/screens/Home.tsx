@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Header from "../components/Header";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -35,8 +36,10 @@ export default function Home() {
 
   return (
     <div>
-      Home
-      <button onClick={handleClick}>Logout</button>
+      {/* Home
+      <button onClick={handleClick}>Logout</button> */}
+
+      <Header />
     </div>
   );
 }
