@@ -7,6 +7,8 @@ import fs from 'fs';
 import path from 'path';
 import { mongoDb } from './utils/mongoDb';
 import * as dotenv from 'dotenv';
+import tool from './controller/tool.controller';
+import setup from './controller/setup.controller';
 
 dotenv.config();
 
@@ -17,13 +19,7 @@ const app: Application = express();
  */
 app.use(helmet());
 app.use(cors());
-app.use(
-	morgan('dev', {
-		stream: fs.createWriteStream(path.join(__dirname, 'access.log'), {
-			flags: 'a',
-		}),
-	}),
-);
+app.use(morgan('dev'));
 app.use(express.json());
 app.use(
 	express.urlencoded({
@@ -37,6 +33,9 @@ app.use(compression());
  */
 
 console.log(process.env.MONGODB_DB_NAME);
+
+app.use('/api', tool);
+app.use('/api', setup);
 
 app.get('/', async (req: Request, res: Response) => {
 	try {
@@ -61,6 +60,15 @@ app.get('/', async (req: Request, res: Response) => {
  * Initialize the application
  */
 const PORT = process.env.PORT || 4000;
+
+process.on('uncaughtException', (error) => {
+	console.error(error.message);
+	process.exit(0);
+});
+
+process.on('unhandledRejection', (error) => {
+	console.error(error);
+});
 
 app.listen(PORT, () => {
 	console.log(`🚀🚀 Server started on PORT: ${PORT} 🚀🚀`);
