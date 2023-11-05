@@ -1,6 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
+import HTTPLogger from "./HttpLogger";
+
+type Features =
+  | "HTTP Logs"
+  | "Event Logs"
+  | "API Monitoring"
+  | "Error Logs"
+  | "Profiler";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -11,6 +19,8 @@ export default function Home() {
     photoURL: string;
     idToken: string;
   } | null>(null);
+
+  const [view, setView] = useState<Features>("HTTP Logs");
 
   useEffect(() => {
     // try fetching user details from localStorage
@@ -39,7 +49,16 @@ export default function Home() {
       {/* Home
       <button onClick={handleClick}>Logout</button> */}
 
-      <Header />
+      <Header
+        logout={handleClick}
+        view={view}
+        handleView={(view: Features) => setView(view)}
+      />
+
+      <br />
+      <br />
+
+      {view === "HTTP Logs" && <HTTPLogger />}
     </div>
   );
 }

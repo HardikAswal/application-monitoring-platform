@@ -1,7 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 
 // Avtar with darpdown menu
-const AvatarMenue = () => {
+interface AvatarMenuProps {
+  logout: () => void;
+}
+
+const AvatarMenue = ({ logout }: AvatarMenuProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const profileRef = useRef<HTMLButtonElement | null>(null);
 
@@ -63,7 +67,10 @@ const AvatarMenue = () => {
             </a>
           </li>
         ))}
-        <button className="block w-full text-justify text-gray-600 hover:text-gray-900 border-t py-3 lg:hover:bg-gray-50 lg:p-3">
+        <button
+          className="block w-full text-justify text-gray-600 hover:text-gray-900 border-t py-3 lg:hover:bg-gray-50 lg:p-3"
+          onClick={logout}
+        >
           Logout
         </button>
       </ul>
@@ -86,10 +93,14 @@ const submenuNav: Features[] = [
   "Profiler",
 ];
 
-export default function Header() {
-  const [state, setState] = useState(false);
+interface IHeaderProps {
+  view: Features;
+  logout: () => void;
+  handleView: (view: Features) => void;
+}
 
-  const [view, setView] = useState<Features>("HTTP Logs");
+export default function Header({ view, logout, handleView }: IHeaderProps) {
+  const [state, setState] = useState(false);
 
   return (
     <header className="text-base lg:text-sm">
@@ -176,15 +187,15 @@ export default function Header() {
               </div>
             </form>
 
-            <AvatarMenue />
+            <AvatarMenue logout={logout} />
           </ul>
         </div>
       </div>
+
       <nav className="border-b">
         <ul className="flex items-center gap-x-3 max-w-screen-xl mx-auto px-4 overflow-x-auto lg:px-8">
           {submenuNav.map((item, idx) => {
             return (
-              // Replace [idx == 0] with [window.location.pathname == item.path]
               <li
                 key={idx}
                 className={`py-1 ${
@@ -192,7 +203,7 @@ export default function Header() {
                 }`}
               >
                 <button
-                  onClick={() => setView(item)}
+                  onClick={() => handleView(item)}
                   className="block py-2 px-3 rounded-lg text-gray-700 hover:text-gray-900 hover:bg-gray-100 duration-150"
                 >
                   {item}
