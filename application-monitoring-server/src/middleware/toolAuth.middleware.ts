@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { findEmailIdByClientKey } from '../service/tool.service';
 
 export default async function toolAuth(
 	req: Request,
@@ -13,6 +14,12 @@ export default async function toolAuth(
 
 	try {
 		//get corresponsing email from mongo
+		const email = await findEmailIdByClientKey(token);
+
+		if (!email) {
+			throw new Error('Could not find associated emailId');
+		}
+
 		next();
 	} catch (error: any) {
 		console.error('ID token verification error:', error.message);

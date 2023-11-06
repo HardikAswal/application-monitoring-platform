@@ -16,10 +16,10 @@ export async function saveClientKey(
 		const db: any = await mongoDb(`${process.env.MONGODB_DB_NAME}`);
 		const collection = db.collection('auth');
 
-		const existingDocument = await collection.findOne({ clientKey });
+		const existingDocument = await collection.findOne({ emailId });
 
 		if (existingDocument) {
-			await collection.updateOne({ clientKey }, { $set: { emailId } });
+			await collection.updateOne({ emailId }, { $set: { clientKey } });
 			console.log(`Updated key: ${clientKey}`);
 		} else {
 			await collection.insertOne({ clientKey, emailId });

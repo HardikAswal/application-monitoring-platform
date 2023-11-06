@@ -26,7 +26,7 @@ export async function profiler<T>(
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
-					Authorization: `Bearer ${clientKey}`, // Add authentication headers
+					Authorization: clientKey, // Add authentication headers
 				},
 				body: JSON.stringify(performanceData),
 			});

@@ -37,7 +37,7 @@ export async function httpRequestLogger(
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: `Bearer ${clientKey}`, // Add authentication headers as needed
+				Authorization: clientKey, // Add authentication headers as needed
 			},
 			body: JSON.stringify(requestData),
 		});

@@ -30,7 +30,7 @@ export async function errorLogger(
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: `Bearer ${clientKey}`,
+				Authorization: clientKey,
 			},
 			body: JSON.stringify(errorData),
 		});

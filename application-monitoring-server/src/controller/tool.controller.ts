@@ -1,4 +1,5 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express, { Request, Response } from 'express';
+import toolAuth from '../middleware/toolAuth.middleware';
 import {
 	createHTTPLog,
 	createEventLog,
@@ -6,30 +7,36 @@ import {
 	createErrorLog,
 	createProfiler,
 } from '../service/tool.service';
-import auth from '../middleware/auth.middleware';
+import {
+	httpLogValidation,
+	eventLogValidation,
+	apiLogValidation,
+	errorLogValidation,
+	profilerValidation,
+} from '../utils/validation';
 
 const router = express.Router();
 
-/**
- * Endpoint for adding http logs
- */
-
-router.post('/tool/http-logger', auth, (req: Request, res: Response) => {
+router.post('/tool', toolAuth, async (req: Request, res: Response) => {
 	try {
-		const { data } = req.body;
-		// const db: any = await mongoDb(`${process.env.MONGO_DB_NAME}`);
-		// const collection = db.collection('application-monitoring-platform');
+		const data = req.body;
 
-		// const data = await collection.find({}).toArray();
-		// console.log(data);
+		if (httpLogValidation(data)) {
+			await createHTTPLog(data);
+		} else if (eventLogValidation(data)) {
+			await createEventLog(data);
+		} else if (apiLogValidation(data)) {
+			await createAPILog(data);
+		} else if (errorLogValidation(data)) {
+			await createErrorLog(data);
+		} else if (profilerValidation(data)) {
+			await createProfiler(data);
+		}
 
-		// console.log(req.user);
-		return res.status(200).json({ message: 'Hello World' });
+		return res.status(200);
 	} catch (error) {
 		console.error(error);
-		return res.status(500).json({
-			error: 'Failed to retrieve data from MongoDB',
-		});
+		return res.status(500);
 	}
 });
 
