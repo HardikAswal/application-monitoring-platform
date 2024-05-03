@@ -1,5 +1,5 @@
 {
-	"name": "@hardik_aswal/application-monitoring",
+	"name": "application-monitoring",
 	"version": "1.0.1",
 	"description": "",
 	"main": "index.js",
