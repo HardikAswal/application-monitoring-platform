@@ -31,6 +31,9 @@ router.post('/tool', toolAuth, async (req: Request, res: Response) => {
 			await createErrorLog(data);
 		} else if (profilerValidation(data)) {
 			await createProfiler(data);
+		} else {
+			console.error('Invalid schema');
+			return res.status(400);
 		}
 
 		return res.status(200);
